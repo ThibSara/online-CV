@@ -121,7 +121,7 @@ export const DATA = {
   projects: [
     {
       title: "Impulse Studio",
-      href: "https://studio-impulse-git-dev-thibsaras-projects.vercel.app/",
+      href: "https://studio-impulse-thibsaras-projects.vercel.app/",
       dates: "August 2024 - Present",
       active: true,
       description:
