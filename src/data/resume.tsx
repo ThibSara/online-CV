@@ -7,9 +7,9 @@ export const DATA = {
   url: "https://dillion.io",
   location: "Paris, France",
   description:
-    "I'm a engineering student passionate about web developpment and UX design.",
+    "I'm an engineering student passionate about web development, data & AI, and UX design.",
   summary:
-    " I love to create and design websites and applications that are both beautiful and functional. I am currently studying AI at ESILV and I am also a freelance web developer and designer. I am always looking for new opportunities to learn and grow.",
+    "I love creating websites and applications that are both beautiful and functional. I'm currently working at Dior as a full stack developer while finishing my studies in AI at ESILV. I also work as a freelance web developer and designer. I'm looking for a full-time position (CDI) starting in September, where I can keep learning, building, and pushing creative ideas forward.",
   avatarUrl: "/me.png",
   skills: [
     "React",
@@ -21,9 +21,11 @@ export const DATA = {
     "C#",
     "Postgres",
     "Docker",
+    "Kubeflow",
+    "Tensorflow",
     "Elasticsearch",
     "Figma",
-    "Blender",
+    "Spline",
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
@@ -59,6 +61,18 @@ export const DATA = {
   },
 
   work: [
+    {
+      company: "Christian Dior Couture",
+      href: "https://www.dior.com/",
+      badges: [],
+      location: "Paris, France",
+      title: "Full Stack Engineer",
+      logoUrl: "/christiandior.png",
+      start: "March 2025",
+      end: "September 2025",
+      description:
+        "Contributed to the development of Dior’s e-commerce website, working on both front-end and back-end features to enhance user experience, performance, and scalability. Collaborated with designers and product teams to deliver clean, reliable code.",
+    },
     {
       company: "Freelance",
       href: "https://alticefrance.com/",
@@ -120,9 +134,50 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "Opera Monster",
+      href: "https://studio-impulse-thibsaras-projects.vercel.app/",
+      dates: "March 2025 - April 2025",
+      active: true,
+      description:
+        "An interactive website featuring 3D monsters and a custom-built step sequencer — all coming together to create a playful mini-opera of monsters.",
+      technologies: ["Next.js", "Typescript", "Spline", "Tone.js"],
+      links: [
+        {
+          type: "Website",
+          href: "https://monster-opera.vercel.app/",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/ThibSara/monster-opera",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "",
+      video: "monster-opera.mov",
+    },
+    {
+      title: "Debiasing Recommender Systems",
+      href: "https://github.com/ThibSara/retrieval/blob/main/correcting_bias.ipynb",
+      dates: "February 2025 - March 2025",
+      active: true,
+      description:
+        "A data science project exploring debiasing in recommender systems. Compared ALS, SVD, and NCF models to reduce popularity and positivity bias.",
+      technologies: ["Python", "Pytorch", "deep learning", "sklearn"],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/ThibSara/retrieval/blob/main/correcting_bias.ipynb",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/retrieval.png",
+      video: "",
+    },
+    {
       title: "Impulse Studio",
       href: "https://studio-impulse-thibsaras-projects.vercel.app/",
-      dates: "August 2024 - Present",
+      dates: "August 2024 - September 2024",
       active: true,
       description:
         "A commercial website for my design and development studio. I am currently building this website with a partner to showcase our work and attract clients.",
