@@ -9,7 +9,7 @@ export const DATA = {
   description:
     "I'm an engineering student passionate about web development, data & AI, and UX design.",
   summary:
-    "I love creating websites and applications that are both beautiful and functional. I'm currently working at Dior as a full stack developer while finishing my studies in AI at ESILV. I also work as a freelance web developer and designer. I'm looking for a full-time position (CDI) starting in September, where I can keep learning, building, and pushing creative ideas forward.",
+    "I love creating websites and applications that are both beautiful and functional. I'm currently working at Dior as a full stack developer while finishing my studies in AI at ESILV. I'm looking for a full-time position starting in September, where I can keep learning, building, and pushing creative ideas forward.",
   avatarUrl: "/me.png",
   skills: [
     "React",
