@@ -135,7 +135,7 @@ export const DATA = {
   projects: [
     {
       title: "Opera Monster",
-      href: "https://studio-impulse-thibsaras-projects.vercel.app/",
+      href: "https://monster-opera.vercel.app/",
       dates: "March 2025 - April 2025",
       active: true,
       description:
