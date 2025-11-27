@@ -7,9 +7,9 @@ export const DATA = {
   url: "https://dillion.io",
   location: "Paris, France",
   description:
-    "I'm an engineering student passionate about web development, data & AI, and UX design.",
+    "I'm an engineering passionate about data & AI, web development and UX design.",
   summary:
-    "I love creating websites and applications that are both beautiful and functional. I'm currently working at Dior as a full stack developer while finishing my studies in AI at ESILV. I'm looking for a full-time position starting in September, where I can keep learning, building, and pushing creative ideas forward.",
+    "I’m currently looking for a full-time role in AI where I can build useful (and hopefully cool) things ! I’m passionate about code and I do freelance web dev on the side to keep experimenting and having fun.",
   avatarUrl: "/me.png",
   skills: [
     "React",
