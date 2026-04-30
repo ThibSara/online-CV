@@ -1,0 +1,193 @@
+---
+title: "Deep Learning — Ch.2: Training Deep Networks"
+publishedAt: "2026-04-22"
+summary: "Gradient descent, backpropagation, loss functions, the vanishing gradient problem, and a full activation function reference."
+---
+
+<div class="callout">
+<p>Part of the <a href="/blog/deep-learning-fundamentals">Deep Learning Fundamentals</a> series. ← <a href="/blog/deep-learning-1-introduction">Chapter 1</a> | Chapter 2 | <a href="/blog/deep-learning-3-keras">Chapter 3 →</a></p>
+</div>
+
+---
+
+## How networks learn
+
+A neural network learns by adjusting its **weights** to minimize prediction error. This process has three core components:
+
+1. A **loss function** that measures how wrong the predictions are
+2. **Backpropagation** that computes how each weight contributed to the error
+3. An **optimizer** that updates the weights to reduce the loss
+
+---
+
+## 📉 Gradient descent
+
+Gradient descent is the core optimization algorithm. It finds the minimum of the loss function by iteratively moving in the direction of steepest descent.
+
+![Gradient descent](/blog/deep-learning/ch2/gradient-descent.png)
+
+**The update rule:**
+
+> w ← w − η · ∂L/∂w
+
+Where η (eta) is the **learning rate** — how big a step to take each iteration.
+
+- **Too high:** overshoots the minimum, training diverges
+- **Too low:** converges very slowly, may get stuck in local minima
+
+### Optimizers
+
+| Optimizer | How it works | Best for |
+| --- | --- | --- |
+| SGD | Uses one sample at a time, noisy but fast | Large datasets, simple tasks |
+| Mini-batch GD | Uses small batches (32–256), balance of speed and stability | Most common in practice |
+| Adam | Adaptive learning rates per parameter + momentum | Default choice for most tasks |
+| RMSprop | Adaptive rates, good for non-stationary problems | RNNs, time series |
+
+---
+
+## 🔄 Backpropagation
+
+Backpropagation computes the gradient of the loss with respect to every weight in the network — using the **chain rule** of calculus.
+
+![Backpropagation](/blog/deep-learning/ch2/backprop.png)
+
+**Step by step:**
+
+1. **Forward pass** — compute predictions and the loss
+2. **Compute output gradient** — ∂L/∂ŷ
+3. **Propagate backwards** — for each layer, compute ∂L/∂w using the chain rule
+4. **Update weights** — w ← w − η · ∂L/∂w
+
+The chain rule lets us decompose the gradient through each layer:
+
+> ∂L/∂w₁ = ∂L/∂a₂ · ∂a₂/∂z₂ · ∂z₂/∂a₁ · ∂a₁/∂z₁ · ∂z₁/∂w₁
+
+---
+
+## 🎯 Loss functions
+
+The loss function measures the gap between predicted and actual values.
+
+### Regression
+
+**Mean Squared Error (MSE):**
+> L = (1/n) Σ (yᵢ − ŷᵢ)²
+
+Penalizes large errors heavily. Sensitive to outliers.
+
+**Mean Absolute Error (MAE):**
+> L = (1/n) Σ |yᵢ − ŷᵢ|
+
+More robust to outliers, but harder to optimize.
+
+### Classification
+
+**Binary Cross-Entropy:**
+> L = −[y log(ŷ) + (1−y) log(1−ŷ)]
+
+For binary classification (sigmoid output).
+
+**Categorical Cross-Entropy:**
+> L = −Σ yᵢ log(ŷᵢ)
+
+For multi-class classification (softmax output).
+
+---
+
+## 🌫️ The vanishing gradient problem
+
+Deep networks trained with sigmoid or tanh can suffer from **vanishing gradients** — the gradient becomes exponentially small as it propagates backwards through many layers.
+
+![Vanishing gradient with sigmoid](/blog/deep-learning/ch2/sigmoid-vanishing.png)
+
+**Why it happens:** sigmoid squashes all values into (0, 1), and its derivative is at most 0.25. Multiply that across 10+ layers and the gradient effectively disappears.
+
+**Solutions:**
+- Use **ReLU** activation (derivative is 1 for positive values)
+- Use **batch normalization**
+- Use **residual connections** (skip connections)
+- Use **gradient clipping**
+
+---
+
+## ⚡ Activation function reference
+
+### Sigmoid
+
+![Sigmoid](/blog/deep-learning/ch2/sigmoid-fn.png)
+
+**Formula:** σ(z) = 1 / (1 + e⁻ᶻ)
+**Range:** (0, 1)
+**Use:** binary output layers
+**Issue:** vanishing gradients, not zero-centered
+
+---
+
+### Tanh
+
+![Tanh](/blog/deep-learning/ch2/tanh.png)
+
+**Formula:** tanh(z) = (eᶻ − e⁻ᶻ) / (eᶻ + e⁻ᶻ)
+**Range:** (−1, 1)
+**Use:** hidden layers when zero-centering matters
+**Issue:** still suffers from vanishing gradients at extremes
+
+---
+
+### ReLU
+
+![ReLU](/blog/deep-learning/ch2/relu.png)
+
+**Formula:** f(z) = max(0, z)
+**Range:** [0, ∞)
+**Use:** default for hidden layers in most architectures
+**Issue:** "dying ReLU" — neurons can get stuck outputting 0
+
+---
+
+### Leaky ReLU
+
+![Leaky ReLU](/blog/deep-learning/ch2/leaky-relu.png)
+
+**Formula:** f(z) = z if z > 0, else αz (α ≈ 0.01)
+**Range:** (−∞, ∞)
+**Use:** fix for dying ReLU — small slope for negative values
+**Benefit:** no dead neurons
+
+---
+
+### Softmax
+
+![Softmax](/blog/deep-learning/ch2/softmax.png)
+
+**Formula:** σ(zᵢ) = eᶻⁱ / Σⱼ eᶻʲ
+**Range:** (0, 1), outputs sum to 1
+**Use:** multi-class classification output layer
+**Benefit:** outputs interpretable as probabilities
+
+---
+
+### Comparison
+
+![Activation function comparison](/blog/deep-learning/ch2/activation-comparison.png)
+
+| Function | Range | Zero-centered | Vanishing gradient | Use |
+| --- | --- | --- | --- | --- |
+| Sigmoid | (0,1) | No | Yes | Binary output |
+| Tanh | (-1,1) | Yes | Mild | Hidden layers |
+| ReLU | [0,∞) | No | No | Default hidden |
+| Leaky ReLU | (-∞,∞) | No | No | Avoid dead neurons |
+| Softmax | (0,1) | No | — | Multi-class output |
+
+---
+
+## 💡 Summary
+
+- **Gradient descent** minimizes loss by updating weights in the direction of the negative gradient
+- **Backpropagation** efficiently computes gradients using the chain rule
+- **Loss functions** measure prediction error — different functions for regression vs classification
+- **Vanishing gradients** cripple deep sigmoid networks — ReLU and batch norm are the fix
+- **Activation functions** each have trade-offs; ReLU is the modern default for hidden layers
+
+→ [Chapter 3: Deep Learning with Keras](/blog/deep-learning-3-keras)

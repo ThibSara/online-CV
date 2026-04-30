@@ -1,0 +1,332 @@
+---
+title: "Deep Learning — Ch.4: Deep Learning Models"
+publishedAt: "2026-04-24"
+summary: "CNNs for images, RNNs for sequences, Transformers for language, and Autoencoders for compression — the architectures behind modern AI."
+---
+
+<div class="callout">
+<p>Part of the <a href="/blog/deep-learning-fundamentals">Deep Learning Fundamentals</a> series. ← <a href="/blog/deep-learning-3-keras">Chapter 3</a> | Chapter 4</p>
+</div>
+
+<div class="callout">
+<p>In this chapter: the difference between shallow and deep networks, and the specialized architectures that make deep learning so powerful — <strong>CNNs, RNNs, Transformers, and Autoencoders</strong>.</p>
+</div>
+
+---
+
+## Shallow vs. deep networks
+
+- A **shallow neural network** has one or two hidden layers
+- A **deep neural network** has multiple hidden layers, each with many neurons
+- Shallow networks typically work on **vector-based inputs**
+- Deep networks can process **raw data** — images, text, audio
+
+### Why deep learning took off 🚀
+
+Three major factors:
+1. Advancements in **algorithms and architectures**
+2. Massive availability of **data**
+3. Increased **computational power** — GPUs, TPUs, cloud computing
+
+---
+
+## 🖼️ Convolutional Neural Networks (CNNs)
+
+<div class="callout">
+<p>🍉 CNNs are neural networks specifically designed for <strong>image-based data</strong>.</p>
+<p>Like standard neural networks, they are made of neurons with weights and biases. Each neuron computes a dot product and applies an activation function (usually ReLU).</p>
+</div>
+
+### What makes CNNs different
+
+CNNs make one key assumption: **the input is an image**.
+
+This allows the architecture to exploit **spatial structure**, leading to:
+- Much **fewer parameters**
+- More **efficient computation**
+- Better **generalization**
+
+Strong performance in image recognition, object detection, and computer vision tasks.
+
+---
+
+## CNN architecture
+
+![CNN architecture overview](/blog/deep-learning/ch4/cnn-architecture.png)
+
+<div class="callout">
+<p><strong>A CNN is composed of:</strong></p>
+<ol>
+<li>Convolutional layers</li>
+<li>ReLU activation layers</li>
+<li>Pooling layers</li>
+<li>Fully connected layers</li>
+<li>Output layer</li>
+</ol>
+</div>
+
+### 1. Input layer
+
+In traditional neural networks, input is a flat vector of size **n × 1**.
+
+In CNNs:
+- Grayscale image → **n × m × 1**
+- Color image → **n × m × 3** (three channels: RGB)
+
+![CNN input representation](/blog/deep-learning/ch4/cnn-input.png)
+
+### 2. Convolution layer
+
+Filters (kernels) slide across the image with a defined **stride**:
+
+- At each position: compute dot product between filter and pixel values
+- Store result in a **feature map**
+- Multiple filters → multiple feature maps → richer spatial representations
+
+![Convolution operation](/blog/deep-learning/ch4/convolution.png)
+
+> **Why not just flatten the image?** Flattening creates millions of parameters, is computationally expensive, and loses all spatial structure. Convolution preserves it.
+
+Convolution layers are followed by **ReLU**, which removes negative values and keeps only positive activations.
+
+### 3. Pooling layer
+
+**Purpose:** reduce the spatial dimensions of feature maps.
+
+- **Max pooling:** keeps the maximum value in each region
+- **Average pooling:** computes the average
+
+Benefits: dimensionality reduction, lower computation, added **spatial invariance** — the network can recognize objects despite shifts or distortions.
+
+![Pooling layer](/blog/deep-learning/ch4/pooling.png)
+
+### 4. Fully connected layer
+
+- Output of convolution/pooling is **flattened** into a vector
+- All neurons are **fully connected**
+- Produces an **n-dimensional output vector** where n = number of classes
+
+![Fully connected layer](/blog/deep-learning/ch4/fully-connected.png)
+
+**Example:** digit classification → n = 10 (digits 0–9)
+
+---
+
+## Building a CNN with Keras
+
+**Model construction logic:**
+
+1. Create model using `Sequential`
+2. Define input shape — e.g., color images of 128×128 → `(128, 128, 3)`
+3. Add layers:
+   - Convolution layer: 16 filters, 2×2 kernel, stride 1, ReLU activation
+   - Max pooling: 2×2, stride 2
+   - Second convolution + pooling block (double the filters)
+   - Flatten layer
+   - Dense layer: 100 neurons
+   - Output layer: n neurons (= number of classes), Softmax activation
+
+![CNN in Keras](/blog/deep-learning/ch4/cnn-keras.png)
+
+---
+
+## ⏳ Recurrent Neural Networks (RNNs)
+
+Standard neural networks treat data points as **independent instances**. This works for many tasks, but fails when **order and context matter**.
+
+**Example:** analyzing scenes in a movie. Each scene depends on the previous ones — context matters, order matters. Traditional networks are not suited for this.
+
+### RNNs
+
+RNNs are designed for **sequential data**. Unlike standard networks, at each step they take:
+- The **new input**
+- The **output from the previous step**
+
+This creates loops in the architecture, allowing information to flow through time.
+
+**Key property:** RNNs model **time and sequence** — they have a temporal dimension.
+
+![RNN architecture](/blog/deep-learning/ch4/rnn.png)
+
+**How they work:**
+
+- At **t = 0**: receives input x₀, produces output y₀
+- At **t = 1**: receives x₁ **and** previous output y₀ (weighted by learned parameters), produces y₁
+- Continues over time, building a temporal dependency structure
+
+**Applications:** text, genomes, handwriting, stock market data.
+
+---
+
+## Long Short-Term Memory (LSTM) 🧱
+
+<div class="callout">
+<p>An LSTM can <strong>remember important information for a long time</strong> and <strong>forget useless information</strong>.</p>
+<p>It uses a system of <strong>gates</strong> — like small learned filters:</p>
+<ul>
+<li>One decides what to <strong>keep in memory</strong></li>
+<li>One decides what to <strong>forget</strong></li>
+<li>One decides what to <strong>output</strong></li>
+</ul>
+<p>This makes LSTMs much better than standard RNNs for learning long sequences — sentences, videos, time series.</p>
+</div>
+
+LSTMs have been used for: image generation, handwriting generation, automatic image captioning, video description.
+
+---
+
+## 🤖 Transformers
+
+<div class="callout">
+<p>Transformers are a type of neural network architecture that have <strong>revolutionized natural language processing</strong> — and much more.</p>
+<p>They power models like ChatGPT and Gemini.</p>
+</div>
+
+Unlike RNNs and CNNs, transformers:
+- Capture **long-range dependencies** in sequential data
+- Excel at machine translation, text summarization, question answering, text-to-image generation
+
+### Types
+
+- **Generative pre-trained models (GPT)** → generate new text/content
+- **Bidirectional transformers (BERT)** → understand context and meaning (used in Google Search/Translate)
+- **Image transformers** → understand and generate images
+
+---
+
+## Core innovation: attention mechanism 👁️
+
+<div class="callout">
+<p>The key innovation in transformers is the <strong>attention mechanism</strong>.</p>
+<p>It allows the model to:</p>
+<ul>
+<li>Weigh the importance of different parts of the input sequence</li>
+<li>Focus on the most relevant tokens when processing each token</li>
+<li>Capture <strong>long-range dependencies</strong> effectively</li>
+</ul>
+</div>
+
+### Self-attention — how it works
+
+For each input token, the model generates three vectors:
+
+- **Q (Query)** → the word we're currently focusing on
+- **K (Key)** → all other words
+- **V (Value)** → information passed to the next layer
+
+**Attention scores:** the query vector is compared (via dot product) to all key vectors — producing relevance scores.
+
+**Weighted sum:** scores are scaled, normalized through softmax, then used to compute a weighted sum of value vectors → a **context vector** for each token.
+
+### Example: "the dog runs"
+
+![Self-attention example](/blog/deep-learning/ch4/self-attention.png)
+
+- Each word becomes an **embedding vector**
+- A **positional encoding** is added to each embedding
+
+![Positional encoding](/blog/deep-learning/ch4/positional-encoding.png)
+
+- Queries, keys, and values are generated
+- Dot products compute attention scores → normalized with softmax
+- Weighted sums of value vectors produce **contextualized representations**
+
+---
+
+## Cross-attention (text-to-image)
+
+<div class="callout">
+<p>Transformers also use <strong>cross-attention</strong> for text-to-image generation — allowing one sequence (text) to influence another (image).</p>
+</div>
+
+Process:
+1. Self-attention learns contextual embeddings from the text prompt
+2. Embeddings pass through the transformer encoder
+3. The model produces **Queries (Q)** from the text
+4. An image transformer applies **cross-attention**
+5. The image is generated auto-regressively — each new part predicted from the text prompt and previously generated image parts
+
+### Transformers vs. RNNs
+
+| | Transformers | RNNs |
+| --- | --- | --- |
+| Processing | Parallel | Sequential |
+| Training speed | Fast | Slow |
+| Long-range context | Excellent | Limited |
+| Vanishing gradients | No | Yes |
+
+**Why transformers dominate:** long-context modeling, parallel computation, high performance across NLP, generation, translation, and multimodal tasks.
+
+**Limitations:** require large datasets, are data-driven, and inherit biases from training data.
+
+<div class="callout">
+<p>🍊 To recap — transformers are:</p>
+<ul>
+<li>The core architecture of modern AI</li>
+<li>Based on <strong>self-attention</strong> (text) and <strong>cross-attention</strong> (multimodal)</li>
+<li>Faster and more powerful than RNNs for most tasks</li>
+<li>Main limitation: data dependency and embedded bias</li>
+</ul>
+</div>
+
+---
+
+## 🗜️ Autoencoders
+
+<div class="callout">
+<p>🥕 An autoencoder is a <strong>data compression algorithm</strong> where both the compression and decompression functions are <strong>learned automatically from data</strong> — rather than engineered by humans.</p>
+</div>
+
+### Key property: data-specific
+
+Autoencoders are trained on a specific type of data and only compress similar data well.
+
+- Trained on **car images** → poor performance on **building images**
+- Learned features are domain-specific
+
+**Applications:** data denoising, dimensionality reduction, data visualization.
+
+### Architecture
+
+![Autoencoder architecture](/blog/deep-learning/ch4/autoencoder.png)
+
+1. **Input** (e.g. an image)
+2. **Encoder** → finds the optimal compressed representation
+3. **Latent representation** → the compressed form
+4. **Decoder** → reconstructs the original input
+
+### Learning mechanism
+
+- Autoencoders are **unsupervised** — no labeled data needed
+- Use **backpropagation**
+- The **target is the input itself**
+- The model learns an approximation of the identity function through the bottleneck
+
+---
+
+## Restricted Boltzmann Machines (RBMs)
+
+RBMs are a type of autoencoder that learn **probabilistic data representations** rather than just compressing inputs.
+
+Useful for:
+1. **Balancing datasets** — generate synthetic minority samples
+2. **Estimating missing values**
+3. **Automatic feature extraction** — especially for unstructured data
+
+---
+
+## 💡 Conclusion
+
+Deep learning has transformed how we approach complex data problems. From simple perceptrons to CNNs, RNNs, Transformers, and Autoencoders — each architecture is designed for a specific type of structure in data.
+
+Key takeaways across the full course:
+- **Gradient descent and activation functions** are the backbone of learning
+- **Supervised and unsupervised networks** handle classification, regression, and feature extraction
+- **Specialized architectures** excel in their domains: CNNs for images, RNNs for sequences, Transformers for long-range dependencies
+- Deep learning requires **large datasets**, careful training, and awareness of biases
+
+Deep learning combines mathematical rigor, computational power, and creativity — enabling machines to learn from data in ways that were once impossible.
+
+---
+
+← [Back to course overview](/blog/deep-learning-fundamentals)

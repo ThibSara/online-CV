@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio-worktree",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["next", "dev", "/Users/sara/Documents/Dev/simple-portfolio/.claude/worktrees/bold-mirzakhani-194697"],
+      "port": 3003,
+      "autoPort": true
+    }
+  ]
+}

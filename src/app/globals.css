@@ -142,3 +142,177 @@ code[data-line-numbers-max-digits="2"] > [data-line]::before {
 code[data-line-numbers-max-digits="3"] > [data-line]::before {
   width: 3rem;
 }
+
+/* ── Blog colour system ─────────────────────────────────── */
+
+/* H2: pastel pink */
+.prose h2 {
+  color: hsl(335 48% 55%);
+}
+.dark .prose h2 {
+  color: hsl(335 68% 82%);
+}
+
+/* H3: slightly deeper pink */
+.prose h3 {
+  color: hsl(335 42% 48%);
+}
+.dark .prose h3 {
+  color: hsl(335 58% 76%);
+}
+
+/* Links: pastel pink */
+.prose a {
+  color: hsl(335 46% 58%);
+  text-decoration-color: hsl(335 42% 78%);
+  text-underline-offset: 3px;
+}
+.prose a:hover {
+  color: hsl(335 50% 44%);
+}
+.dark .prose a {
+  color: hsl(335 72% 82%);
+  text-decoration-color: hsl(335 48% 58%);
+}
+.dark .prose a:hover {
+  color: hsl(335 78% 90%);
+}
+
+/* Inline code: pink tint */
+.prose :not(pre) > code {
+  background-color: hsl(335 60% 97%);
+  color: hsl(335 52% 46%);
+  border: 1px solid hsl(335 38% 90%);
+  border-radius: 0.3rem;
+  padding: 0.1em 0.35em;
+}
+.dark .prose :not(pre) > code {
+  background-color: hsl(335 35% 13%);
+  color: hsl(335 72% 82%);
+  border-color: hsl(335 32% 26%);
+}
+
+/* Blockquotes: soft pastel purple */
+.prose blockquote {
+  background-color: hsl(260 45% 97%);
+  border-left-color: hsl(260 38% 74%);
+  border-radius: 0 0.4rem 0.4rem 0;
+  padding: 0.65rem 1rem;
+  font-style: normal;
+  color: hsl(260 22% 32%);
+}
+.dark .prose blockquote {
+  background-color: hsl(260 32% 12%);
+  border-left-color: hsl(260 42% 50%);
+  color: hsl(260 18% 82%);
+}
+.prose blockquote p {
+  color: inherit;
+}
+.prose blockquote p::before,
+.prose blockquote p::after {
+  content: none;
+}
+
+/* Tables: pastel pink header */
+.prose thead tr {
+  background-color: hsl(335 55% 96%);
+}
+.dark .prose thead tr {
+  background-color: hsl(335 32% 15%);
+}
+.prose thead th {
+  color: hsl(335 45% 48%);
+}
+.dark .prose thead th {
+  color: hsl(335 65% 82%);
+}
+.prose tbody tr:nth-child(even) {
+  background-color: hsl(335 38% 99%);
+}
+.dark .prose tbody tr:nth-child(even) {
+  background-color: hsl(335 22% 11%);
+}
+
+/* Horizontal rule: pink → purple gradient */
+.prose hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    hsl(335 58% 80%),
+    hsl(260 48% 80%),
+    hsl(335 58% 80%),
+    transparent
+  );
+  margin: 2.25rem 0;
+}
+.dark .prose hr {
+  background: linear-gradient(
+    to right,
+    transparent,
+    hsl(335 42% 45%),
+    hsl(260 38% 45%),
+    hsl(335 42% 45%),
+    transparent
+  );
+}
+
+/* ── Callout boxes ──────────────────────────────────────── */
+.callout {
+  background-color: hsl(335 62% 97%);
+  border: 1px solid hsl(335 40% 88%);
+  border-left: 3px solid hsl(335 44% 74%);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.875rem 1.125rem;
+  margin: 1.25rem 0;
+  font-size: 0.925rem;
+  line-height: 1.65;
+  color: hsl(335 25% 28%);
+}
+
+.dark .callout {
+  background-color: hsl(335 32% 12%);
+  border-color: hsl(335 30% 24%);
+  border-left-color: hsl(335 44% 52%);
+  color: hsl(335 18% 86%);
+}
+
+.callout p {
+  margin: 0.35rem 0;
+}
+
+.callout p:first-child {
+  margin-top: 0;
+}
+
+.callout p:last-child {
+  margin-bottom: 0;
+}
+
+.callout ul, .callout ol {
+  margin: 0.5rem 0 0.25rem 1.25rem;
+  padding: 0;
+}
+
+.callout li {
+  margin: 0.2rem 0;
+}
+
+.callout strong {
+  font-weight: 600;
+  color: hsl(335 48% 40%);
+}
+
+.dark .callout strong {
+  color: hsl(335 68% 82%);
+}
+
+.callout a {
+  color: hsl(335 46% 52%);
+}
+
+.dark .callout a {
+  color: hsl(335 72% 82%);
+}

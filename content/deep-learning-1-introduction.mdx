@@ -1,0 +1,144 @@
+---
+title: "Deep Learning — Ch.1: Introduction"
+publishedAt: "2026-04-21"
+summary: "From AI to deep learning: biological neurons, artificial neurons, forward propagation, and activation functions."
+---
+
+<div class="callout">
+<p>Part of the <a href="/blog/deep-learning-fundamentals">Deep Learning Fundamentals</a> series. Chapter 1 — Next → <a href="/blog/deep-learning-2-basics">Chapter 2</a></p>
+</div>
+
+---
+
+## 🗺️ The AI landscape
+
+**Artificial Intelligence** is the broadest field — any technique enabling machines to mimic human intelligence.
+
+Inside AI sits **Machine Learning**, and within ML, a more specialized field: **Deep Learning**.
+
+> AI → Machine Learning → Deep Learning
+
+### Machine Learning (ML)
+
+ML refers to algorithms that **learn patterns from data** to make predictions, without being explicitly programmed for every rule.
+
+- Feature engineering is often **manual** (humans design input features)
+- Models rely on **structured data** — tables, numeric values, categories
+- Classic algorithms: Linear Regression, Decision Trees, Random Forests, SVM, k-NN
+
+**Example:** predicting house prices using handcrafted features like surface area, number of rooms, location.
+
+### Deep Learning (DL)
+
+Deep learning is a subfield of ML based on **artificial neural networks with many layers**.
+
+Unlike traditional ML, deep learning models:
+- Learn **features automatically** from raw data
+- Handle **unstructured data** — images, audio, text, video
+- Scale extremely well with large datasets and compute power
+
+**Example:** feeding raw pixels of an image to a network, and letting it learn edges, shapes, and objects by itself.
+
+<div class="callout">
+<p>Machine Learning teaches systems to learn from data.<br/>Deep Learning teaches systems to learn <strong>representations from raw reality</strong>.</p>
+</div>
+
+### Why deep learning matters today
+
+A wide range of applications rely on deep learning:
+- automatic language translation
+- image classification and object detection
+- autonomous driving
+- conversational agents and chatbots
+- text-to-image generation and generative AI
+
+---
+
+## 🧠 From biological to artificial neurons
+
+<div class="callout">
+<p>🍓 Deep learning is inspired by how biological neurons process information in the brain.</p>
+</div>
+
+A real neuron contains:
+- **Soma (cell body):** the core processing unit
+- **Dendrites:** branches that receive signals from neighboring neurons
+- **Axon:** carries the processed signal away from the soma
+- **Synapses:** junctions that transmit signals to the next neuron's dendrites
+
+![Biological vs artificial neuron](/blog/deep-learning/ch1/neuron.png)
+
+Signal flow: **Dendrites receive → Soma integrates → Axon sends → Synapses pass on**
+
+Learning in the brain happens when certain neural connections are repeatedly activated — those pathways strengthen, and information flows through them more easily over time.
+
+### Artificial neural networks
+
+Artificial neurons mimic this behavior mathematically:
+
+- An artificial neuron (or **perceptron**) takes multiple input values
+- Each input has an associated **weight**, representing connection strength
+- The neuron computes a **weighted sum** of its inputs
+- It compares this sum to a threshold — if exceeded, it fires
+
+Neurons are organized into **layers**: an **input layer** that receives raw data, an **output layer** that produces predictions, and **hidden layers** in between.
+
+---
+
+## ➡️ Forward propagation
+
+<div class="callout">
+<p>🍎 Forward propagation is the process by which data flows through a neural network — from the input layer to the output layer.</p>
+</div>
+
+For a neuron with two inputs x₁ and x₂, each with weights w₁ and w₂:
+
+1. Compute the **weighted sum**: z = w₁x₁ + w₂x₂ + b
+2. Apply an **activation function**: a = f(z)
+3. Pass **a** as input to the next layer
+
+This repeats through every layer until the network produces a final prediction ŷ.
+
+![Multi-layer neural network](/blog/deep-learning/ch1/multi-layer.png)
+
+---
+
+## ⚡ Activation functions
+
+Without activation functions, a neural network is just a linear regression stacked multiple times — no matter how many layers, the output stays linear. Activation functions unlock the ability to learn **complex and abstract patterns**.
+
+### Sigmoid
+
+Squashes values into a range between 0 and 1.
+
+- Large positive z → output close to **1**
+- Large negative z → output close to **0**
+
+![Sigmoid function](/blog/deep-learning/ch1/sigmoid.png)
+
+**Formula:** σ(z) = 1 / (1 + e⁻ᶻ)
+
+**Pros:** smooth, probabilistic output
+**Cons:** vanishing gradients for large |z|, not zero-centered
+
+### Other activation functions
+
+![Activation functions comparison](/blog/deep-learning/ch1/activation-functions.png)
+
+| Function | Range | Common use |
+| --- | --- | --- |
+| Sigmoid | (0, 1) | Binary classification output |
+| Tanh | (-1, 1) | Hidden layers (zero-centered) |
+| ReLU | [0, ∞) | Default for hidden layers |
+| Softmax | (0, 1) summing to 1 | Multi-class output |
+
+---
+
+## 💡 Summary
+
+- Deep learning is a subset of ML using multi-layer neural networks
+- Artificial neurons compute weighted sums and apply activation functions
+- Forward propagation passes data layer by layer to produce a prediction
+- Activation functions introduce non-linearity — essential for learning complex patterns
+
+→ [Chapter 2: Training Deep Networks](/blog/deep-learning-2-basics)

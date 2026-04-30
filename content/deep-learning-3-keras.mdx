@@ -1,0 +1,203 @@
+---
+title: "Deep Learning — Ch.3: Deep Learning with Keras"
+publishedAt: "2026-04-23"
+summary: "TensorFlow, PyTorch, and Keras compared. Building regression and classification models step by step."
+---
+
+<div class="callout">
+<p>Part of the <a href="/blog/deep-learning-fundamentals">Deep Learning Fundamentals</a> series. ← <a href="/blog/deep-learning-2-basics">Chapter 2</a> | Chapter 3 | <a href="/blog/deep-learning-4-models">Chapter 4 →</a></p>
+</div>
+
+---
+
+## 🛠️ The deep learning framework landscape
+
+Three frameworks dominate modern deep learning:
+
+| Framework | Creator | Style | Best for |
+| --- | --- | --- | --- |
+| **TensorFlow** | Google | Production-ready, verbose | Deployment, mobile, production |
+| **PyTorch** | Meta | Pythonic, flexible | Research, custom architectures |
+| **Keras** | Google (on top of TF) | High-level, easy API | Rapid prototyping, learning |
+
+<div class="callout">
+<p><strong>Keras</strong> is the recommended starting point. It sits on top of TensorFlow and lets you build, train, and evaluate models with minimal boilerplate.</p>
+</div>
+
+---
+
+## 🔁 The Keras workflow
+
+Every Keras model follows the same pattern:
+
+1. **Prepare the data** — clean, normalize, split into train/test
+2. **Build the model** — define architecture with `Sequential` or functional API
+3. **Compile** — choose optimizer, loss function, and metrics
+4. **Train** — call `.fit()` with training data
+5. **Evaluate** — call `.evaluate()` on test data
+6. **Predict** — call `.predict()` on new data
+
+---
+
+## 📐 Regression model — predicting concrete strength
+
+A classic regression task: predicting the compressive strength of concrete based on its ingredients.
+
+![Concrete dataset overview](/blog/deep-learning/ch3/concrete-dataset.png)
+
+### The data
+
+- **Features:** cement, water, fly ash, superplasticizer, age, etc.
+- **Target:** compressive strength (MPa)
+- **Task:** continuous value prediction → regression
+
+### Preprocessing
+
+```python
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+```
+
+Normalization is critical — features on very different scales (e.g., cement in kg vs age in days) will cause the optimizer to struggle without it.
+
+### Building the model
+
+![Regression model code](/blog/deep-learning/ch3/regression-code.png)
+
+```python
+from tensorflow import keras
+
+model = keras.Sequential([
+    keras.layers.Dense(64, activation='relu', input_shape=(X_train.shape[1],)),
+    keras.layers.Dense(64, activation='relu'),
+    keras.layers.Dense(1)  # single output, no activation for regression
+])
+
+model.compile(
+    optimizer='adam',
+    loss='mean_squared_error',
+    metrics=['mae']
+)
+```
+
+<div class="callout">
+<p><strong>Key choices:</strong></p>
+<ul>
+<li>ReLU activations in hidden layers</li>
+<li>No activation on output layer (we want any real number)</li>
+<li>MSE loss for regression</li>
+<li>Adam optimizer</li>
+</ul>
+</div>
+
+### Training
+
+```python
+history = model.fit(
+    X_train, y_train,
+    epochs=100,
+    validation_split=0.2,
+    verbose=0
+)
+```
+
+The `validation_split=0.2` holds out 20% of training data to monitor overfitting during training.
+
+### Evaluation
+
+```python
+test_loss, test_mae = model.evaluate(X_test, y_test)
+print(f"Test MAE: {test_mae:.2f} MPa")
+```
+
+---
+
+## 🔮 Classification model — image classification
+
+Classification maps inputs to discrete categories (classes).
+
+### The data
+
+![Classification dataset](/blog/deep-learning/ch3/classification-data.png)
+
+A standard image classification setup:
+- **Features:** pixel values (flattened or as 2D arrays)
+- **Target:** class label (e.g., cat, dog, car)
+- **Task:** predict the correct category
+
+### Preprocessing
+
+```python
+# Normalize pixel values from [0, 255] to [0, 1]
+X_train = X_train / 255.0
+X_test = X_test / 255.0
+```
+
+### Building the model
+
+![Classification model — part 1](/blog/deep-learning/ch3/classification-code-1.png)
+
+```python
+model = keras.Sequential([
+    keras.layers.Flatten(input_shape=(28, 28)),     # flatten 2D image to 1D
+    keras.layers.Dense(128, activation='relu'),
+    keras.layers.Dense(64, activation='relu'),
+    keras.layers.Dense(10, activation='softmax')    # 10 classes
+])
+```
+
+![Classification model — part 2](/blog/deep-learning/ch3/classification-code-2.png)
+
+```python
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',  # integer class labels
+    metrics=['accuracy']
+)
+
+model.fit(X_train, y_train, epochs=10, validation_split=0.1)
+```
+
+<div class="callout">
+<p><strong>Key choices:</strong></p>
+<ul>
+<li><code>Flatten</code> layer converts 28×28 images to 784-dim vectors</li>
+<li>Softmax output: probabilities across 10 classes</li>
+<li><code>sparse_categorical_crossentropy</code> when labels are integers (not one-hot)</li>
+</ul>
+</div>
+
+### Making predictions
+
+```python
+predictions = model.predict(X_test)
+predicted_class = predictions.argmax(axis=1)
+```
+
+`argmax` picks the class with the highest probability.
+
+---
+
+## Regression vs classification — quick comparison
+
+| | Regression | Classification |
+| --- | --- | --- |
+| Output | Continuous value | Discrete class |
+| Output activation | None (linear) | Softmax / Sigmoid |
+| Loss function | MSE / MAE | Cross-entropy |
+| Metric | MAE, RMSE | Accuracy, F1 |
+
+---
+
+## 💡 Summary
+
+- **Keras** makes building neural networks fast and readable
+- The workflow is always: prepare → build → compile → train → evaluate
+- **Regression**: linear output, MSE loss, MAE metric
+- **Classification**: softmax output, cross-entropy loss, accuracy metric
+- Normalization of inputs is almost always necessary
+
+→ [Chapter 4: Deep Learning Models](/blog/deep-learning-4-models)
