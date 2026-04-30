@@ -9,38 +9,55 @@ export const metadata = {
 
 const BLUR_FADE_DELAY = 0.04;
 
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 export default async function BlogPage() {
   const posts = await getBlogPosts();
+
+  const sorted = posts.sort((a, b) =>
+    new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt) ? 1 : -1
+  );
 
   return (
     <section>
       <BlurFade delay={BLUR_FADE_DELAY}>
-        <h1 className="font-medium text-2xl mb-8 tracking-tighter">blog</h1>
+        <div className="mb-10">
+          <h1 className="font-medium text-2xl tracking-tighter mb-2">blog</h1>
+          <p className="text-muted-foreground text-sm">
+            Notes, courses, and ideas I wanted to share.
+          </p>
+        </div>
       </BlurFade>
-      {posts
-        .sort((a, b) => {
-          if (
-            new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
-          ) {
-            return -1;
-          }
-          return 1;
-        })
-        .map((post, id) => (
+
+      <div className="flex flex-col gap-3">
+        {sorted.map((post, id) => (
           <BlurFade delay={BLUR_FADE_DELAY * 2 + id * 0.05} key={post.slug}>
-            <Link
-              className="flex flex-col space-y-1 mb-4"
-              href={`/blog/${post.slug}`}
-            >
-              <div className="w-full flex flex-col">
-                <p className="tracking-tight">{post.metadata.title}</p>
-                <p className="h-6 text-xs text-muted-foreground">
-                  {post.metadata.publishedAt}
-                </p>
+            <Link href={`/blog/${post.slug}`} className="group block">
+              <div className="rounded-xl border border-border/50 px-5 py-4 transition-all duration-200 hover:border-pink-200 hover:bg-pink-50/40 dark:hover:border-pink-900/50 dark:hover:bg-pink-950/20">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground/60">
+                    {formatDate(post.metadata.publishedAt)}
+                  </span>
+                  <p className="font-medium tracking-tight text-foreground group-hover:text-pink-700 dark:group-hover:text-pink-300 transition-colors">
+                    {post.metadata.title}
+                  </p>
+                  {post.metadata.summary && (
+                    <p className="text-sm text-muted-foreground line-clamp-2 mt-0.5">
+                      {post.metadata.summary}
+                    </p>
+                  )}
+                </div>
               </div>
             </Link>
           </BlurFade>
         ))}
+      </div>
     </section>
   );
 }
